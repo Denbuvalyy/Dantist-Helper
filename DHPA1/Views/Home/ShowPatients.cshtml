@@ -1,0 +1,171 @@
+﻿@model IEnumerable<DHPA1.Models.Patient>
+
+@{
+    ViewBag.Title = "ShowPatients";
+    var pageNum = 0;
+}
+
+@helper printPage(int i)
+{
+    if (i == ViewBag.pageNumber)
+    {
+        <a class="activeM" href="~/Home/ShowPatients/?pageNumber=@i&SearchStr=@ViewBag.searchStr&items=@ViewBag.items">@i</a>
+    }
+    else
+    {
+        <a href="~/Home/ShowPatients/?pageNumber=@i&SearchStr=@ViewBag.searchStr&items=@ViewBag.items">@i</a>
+    }
+}
+
+
+<div class="mine">
+    <div>
+        <h3>@Session["login"].ToString()'s patients</h3>       
+    </div><br />
+
+    @using (Html.BeginForm("ShowDantists", "Home", FormMethod.Post))
+    {<div>
+    Show:
+    <select id="PageItems" name="PageItems" onchange="ShowItems(this.value)">
+
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="50">50</option>
+    </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <span class="glyphicon glyphicon-search"></span>
+    Search: &nbsp;
+    <input type="text" id="SearchStr" name="SearchStr" class="form-inline" onfocus="this.setSelectionRange(this.value.length, this.value.length);"
+           autofocus value="@ViewBag.searchStr" onkeydown="setTimeout(SearchFunction,1000,this)" />
+    <span>&nbsp;&nbsp; Found @ViewBag.totalSrch patients</span>
+
+    <input type="submit" id="btnSearch" class="btn-default" value="Search Now" />
+</div>
+    }
+    <br />
+    <div>
+       
+        <table id="dtBasicExample" class="table table-bordered table-sm" cellspacing="0">
+            <tr>
+                <th>Last Visit</th>
+                <th>Full name</th>                
+                <th>Phone number</th>
+                <th>Work place</th>
+                <th>Action</th>
+            </tr>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>@item.LastVisitDate.ToString("dd/MM/yyyy")</td>
+
+                <td>@item.FullName()</td>
+                
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WorkPlace)
+                </td>
+                <td>
+                    @Html.ActionLink("New visit", "CreateVisit", new { id = item.PatientId })&nbsp;
+
+                    @Html.ActionLink("Details", "PatientsDetails", new { id = item.PatientId })&nbsp;
+                    @Html.ActionLink("Visits", "ShowVisits", new { id = item.PatientId })&nbsp;                
+                    <button type="button" style="padding-left:0px;padding-top:4px;" class="btn btn-link" onclick="DeleteConfirm(@item.PatientId,'p')">Delete</button>
+                </td>
+            </tr>
+            }
+        </table>
+    </div>
+    <div id="paginationMine" class="paginationMine">
+        <a id="leftShift" href="#" onclick="SideJump(-1)">&laquo;</a>
+        @if (@ViewBag.pages > 10)
+        {
+            switch (ViewBag.pageNumber)
+            {
+                case int n when (n == 1 || n == 2):
+                    for (int i = 1; i < 6; i++)
+                    {
+                        @printPage(i);
+                    }
+                    <a class="disbM">........</a>
+                    for (int i = ViewBag.pages - 2; i < ViewBag.pages + 1; i++)
+                    {
+                        @printPage(i);
+                    }
+                    break;
+                case int n when (n >= 3 && n <= ViewBag.pages - 6):
+                    for (int i = ViewBag.pageNumber - 2; i < ViewBag.pageNumber + 3; i++)
+                    {
+                        @printPage(i);
+                        pageNum = i;
+                    }
+                    if (pageNum != ViewBag.pages - 4)
+                    {
+                        <a class="disbM">........</a>
+                    }
+                    for (int i = ViewBag.pages - 3; i < ViewBag.pages + 1; i++)
+                    {
+                        @printPage(i);
+                    }
+                    break;
+                case int n when (n >= ViewBag.pages - 5 && n <= ViewBag.pages):
+                    {
+                        for (int i = ViewBag.pageNumber - 2; i < ViewBag.pages + 1; i++)
+                        {
+                            @printPage(i);
+                        }
+                    }
+                    break;
+            }
+        }
+        else
+        {
+            for (int i = 1; i < @ViewBag.pages + 1; i++)
+            {
+                @printPage(i);
+            }
+        }
+        <a id="rightShift" href="#" onclick="SideJump(1)">&raquo;</a>
+    </div>
+</div>
+@if (Session["dantistId"] != null)
+{
+    <script>
+        document.getElementById("logout1").innerHTML = "Logout " + "@Session["login"].ToString()";
+        document.getElementById("logout").style.display = "block";
+        document.getElementById("showpatients").style.display = "block";
+        document.getElementById("createpatient").style.display = "block";
+        document.getElementById("login").style.display = "none";
+        document.getElementById("showpatients").classList.add("active");
+    </script>
+}
+@if(Session["dantistId"] != null&& Session["login"].ToString()=="admin")
+{ <script>document.getElementById("dantistsinfo").style.display = "block";</script>}
+
+<script>
+    function SearchFunction(input) {        
+        window.location.href = "/Home/ShowPatients/?SearchStr=" + input.value;
+    }    
+
+    function ShowItems(value) {       
+        window.location.href = "/Home/ShowPatients/?items=" + value + "&SearchStr=" + document.getElementById("SearchStr").value;
+    }
+    function SideJump(a) {
+        var c;
+        if (a < 0) { c = @ViewBag.pageNumber-1; } else { c =@ViewBag.pageNumber+1;}
+        window.location.href = "/Home/ShowPatients/?pageNumber=" + c + "&SearchStr=" + document.getElementById("SearchStr").value
+            + "&items=" + document.getElementById("PageItems").value;
+    }  
+    document.getElementById("btnSearch").style.display = "none";
+    document.getElementById("PageItems").value =@ViewBag.items;
+    if (@ViewBag.pageNumber== 1) { document.getElementById("leftShift").style.display = "none"; }
+    if (@ViewBag.pageNumber==@ViewBag.pages) { document.getElementById("rightShift").style.display = "none"; }
+    if (@ViewBag.pageNumber== 1&&@ViewBag.pageNumber==@ViewBag.pages||@ViewBag.pages==0)
+    {
+        document.getElementById("leftShift").style.display = "none";
+        document.getElementById("rightShift").style.display = "none";
+    }
+</script>
+
+
+

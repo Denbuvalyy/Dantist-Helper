@@ -1,0 +1,43 @@
+﻿@model DHPA1.Models.Register
+
+@{
+    ViewBag.Title = "Login";
+}
+
+<div id="logindantist">
+    <fieldset class="mine" style="float:right;margin-top:70px;">
+        <legend>Login or <a href="/Home/Register" style="text-decoration:none">Register</a></legend>
+        @using (Html.BeginForm("Login", "Home", FormMethod.Post))
+        {
+            <span>User Name:</span><br />
+            @Html.TextBoxFor(m => m.Login, new { @class = "form-control", placeholder = "Enter your login", required = "required" })<br />
+            <span>Password:</span><br />
+            @Html.TextBoxFor(m => m.Password, new { @class = "form-control", @type = "password", id = "textType", onblur = "if(this.value.length<8){alert('Password must be atleast 8 symbols long!');}", placeholder = "Enter your password", required = "required" })<br />
+            <input type="checkbox" id="passwordChbx" onclick="ShowPassword('textType','')" />
+            <label for="passwordChbx">Show password </label>
+            <span>&nbsp;&nbsp;</span>
+            <a href="/Home/ForgottenPassword" style="text-decoration:none">Forgot your password?</a>
+            <br /><br />        
+            <p><input type="submit" class="btn" value="Login" /></p>
+        }
+
+    </fieldset>
+</div>
+
+@if (Session["dantistId"] != null)
+{
+    <script>
+        document.getElementById("logout1").innerHTML = "Logout " + "@Session["login"].ToString()";
+        document.getElementById("logout").style.display = "block";
+        document.getElementById("showpatients").style.display = "block";
+        document.getElementById("createpatient").style.display = "block";
+        document.getElementById("login").style.display = "none";
+        document.getElementById("logindantist").style.display = "none";
+    </script>}
+
+@if(Model!=null&&Model.UserExists==true)
+{ <script>alert("User does not exist! Try to register.");</script>}
+@if (Model!=null&&Model.Wrongpassword==true)
+{ <script>window.alert("Wrong password!");</script>}
+
+<script>document.getElementById("login").classList.add("active");</script>

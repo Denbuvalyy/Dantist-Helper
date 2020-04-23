@@ -1,0 +1,64 @@
+﻿@model List<DHPA1.Models.Tooth>
+
+@{
+    ViewBag.Title = "ShowTeeth";
+    int j = 0;
+}
+
+<div class="container">
+    <h4>Patient<strong> @ViewBag.fullname</strong> teeth</h4><br />
+    <div>
+        @for (int k = 0; k < 4; k++, j += 8)
+        {
+            <table style="width:50%;float:left;" class="table table-bordered table-responsive table-sm" cellspacing="0">
+                <tr>
+                    @for (int i = j; i < 8 + j; i++)
+                    {
+                        <th>@Model[i].Position</th>
+                    }
+                </tr>
+                <tr>
+                    @for (int i = j; i < 8 + j; i++)
+                    {
+                        <td title="State" id="State_@i">@Model[i].Description</td>
+                    }
+                </tr>
+                <tr>
+                    @for (int i = j; i < 8 + j; i++)
+                    {
+                        <td>
+                            <select id="ToothState_@i" title="Tooth state" name="ToothState" onchange="StateChange(this.value,@i)">
+                                <option value="empty">:</option>
+                                <option value="0" title="Absent">0</option>
+                                <option value="П" title="Filling">П</option>
+                                <option value="K" title="Crown">K</option>
+                                <option value="C" title="Caries">C</option>
+                                <option value="P" title="Pulpitis">P</option>
+                                <option value="Pt" title="Periodontitis">Pt</option>
+                                <option value="I" title="Intact">I</option>
+                                <option value="Im" title="Implant">Im</option>
+                            </select><br />
+                            @Html.ActionLink("New", "CreateManipulation", new { id = Model[i].ToothId }, new { title = "New manipulation" })&nbsp;<br />
+
+                            @Html.ActionLink("Show", "ShowManipulations", new { id = Model[i].ToothId }, new { title = "Show manipulations" })&nbsp;<br />
+                        </td>
+                    }
+                </tr>
+            </table>
+        }
+        <br />
+        <button type="button" class="alert-info" onclick="SaveChanges(@Session["patientId"])">Save changes</button>&nbsp;&nbsp;
+        @Html.ActionLink("Back to patient", "PatientsDetails", new { id = (int)Session["patientId"] })<br />
+
+
+    </div>
+</div>
+@if (Session["dantistId"] != null)
+{
+    <script>
+        document.getElementById("logout1").innerHTML = "Logout " + "@Session["login"].ToString()";
+        document.getElementById("logout").style.display = "block";
+        document.getElementById("showpatients").style.display = "block";
+        document.getElementById("createpatient").style.display = "block";
+        document.getElementById("login").style.display = "none";
+    </script>}

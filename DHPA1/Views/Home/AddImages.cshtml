@@ -1,0 +1,29 @@
+﻿
+@{
+    ViewBag.Title = "AddImages";
+}
+
+
+<fieldset style="width:40%;float:right;margin-top:70px;">
+    <legend>Add images</legend>
+
+    @using (Html.BeginForm("AddImages", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <label for="files">Select images:</label>
+        <input id="files" type="file" name="files" multiple onchange="Filevalidation(this)" />
+        <br /><p id="size"></p><br />
+        <p><input type="submit" id="btnCrt" class="btn" value="Add images" /></p>
+    }
+
+</fieldset>
+
+
+@if (Session["dantistId"] != null)
+{
+    <script>
+        document.getElementById("logout1").innerHTML = "Logout " + "@Session["login"].ToString()";
+        document.getElementById("logout").style.display = "block";
+        document.getElementById("showpatients").style.display = "block";
+        document.getElementById("createpatient").style.display = "block";
+        document.getElementById("login").style.display = "none";
+    </script>}

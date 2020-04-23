@@ -1,0 +1,34 @@
+﻿@model DHPA1.Models.Manipulation
+
+@{
+    ViewBag.Title = "CreateManipulation";
+}
+   
+<div class="ss-item-required">
+    <fieldset style="width:40%;float:right;margin-top:70px;">
+        <legend>New Manipulation</legend>
+
+        @using (Html.BeginForm("CreateManipulation", "Home", FormMethod.Post, new { name = "newmanipulation", enctype = "multipart/form-data" }))
+        {
+            <span>Manipulation's date:</span><br />
+            @Html.TextBoxFor(m => m.ManipulationDate, new { @class = "form-control", type = "date", value = "2017-06-01", placeholder = "visit's date", required = "required" })<br />
+            <span>Manipulation's description:</span><br />
+            @Html.TextAreaFor(m => m.Description, new { @class = "form-control", type = "textarea", placeholder = "Visit's description", required = "required" })<br />
+
+            <label for="files">Select images:</label>
+            <input id="files" type="file" name="files" multiple onchange="Filevalidation(this)" />
+            <br /><p id="size"></p><br />
+            <p><input type="button" class="btn" id="btnCrt" value="Create Manipulation" onclick="SubmitForm('newmanipulation')" /></p>
+        }
+    </fieldset>
+</div>
+
+@if (Session["dantistId"] != null)
+{
+    <script>
+        document.getElementById("logout1").innerHTML = "Logout " + "@Session["login"].ToString()";
+        document.getElementById("logout").style.display = "block";
+        document.getElementById("showpatients").style.display = "block";
+        document.getElementById("createpatient").style.display = "block";
+        document.getElementById("login").style.display = "none";
+    </script>}

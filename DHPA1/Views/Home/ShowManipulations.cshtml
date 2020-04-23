@@ -1,0 +1,51 @@
+﻿@model List<DHPA1.Models.Manipulation>
+
+@{
+    ViewBag.Title = "ShowManipulations";
+}
+
+
+<div class="mine" style="height:auto;">
+    <h3>Tooth manipulations:</h3>
+    <table id="dtBasicExample" class="table table-bordered table-sm" cellspacing="0">
+        <tr>
+            <th>
+                Last Manipulation
+            </th>
+            <th>
+                Description
+            </th>
+
+            <th>
+                Action
+            </th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.ManipulationDate.ToString("dd/MM/yyyy")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>                   
+                    @Html.ActionLink("Add images", "AddImages", new { id = item.ManipulationId })&nbsp;
+                    @Html.ActionLink("Details", "ManipulationDetails", new { id = item.ManipulationId })&nbsp;                   
+                    <button type="button" style="padding-left:0px;padding-top:4px;" class="btn btn-link" onclick="DeleteConfirm(@item.ManipulationId,'m')">Delete</button>                   
+                </td>
+            </tr>
+        }
+    </table>
+    <h4> @Html.ActionLink("Back to teeth", "ShowTeeth", new { id = (int)Session["patientId"] })</h4>
+</div>
+@if (Session["dantistId"] != null)
+{
+    <script>
+        document.getElementById("logout1").innerHTML = "Logout " + "@Session["login"].ToString()";
+        document.getElementById("logout").style.display = "block";
+        document.getElementById("showpatients").style.display = "block";
+        document.getElementById("createpatient").style.display = "block";
+        document.getElementById("login").style.display = "none";
+    </script>}
+

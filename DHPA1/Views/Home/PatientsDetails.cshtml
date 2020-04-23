@@ -1,0 +1,86 @@
+﻿@model DHPA1.Models.Patient
+
+@{
+    ViewBag.Title = "PatientsDetails";
+}
+
+<div>
+    <fieldset class="mine">
+        <legend>Patients details</legend>
+        <dl>
+            <dt>
+                Name
+            </dt>
+            <dd>
+                @Html.DisplayFor(m => m.Name)
+            </dd>
+            <dt>
+                Surname
+            </dt>
+            <dd>
+                @Html.DisplayFor(m => m.Surname)
+            </dd>
+            <dt>
+                Date of birth
+            </dt>
+            <dd>
+                @Model.DOB.ToString("dd/MM/yyyy")
+            </dd>
+            <dt>
+                Phone number
+            </dt>
+            <dd>
+                @Html.DisplayFor(m => m.PhoneNumber)
+            </dd>
+            <dt>
+                Email
+            </dt>
+            <dd>
+                @Html.DisplayFor(m => m.Email)
+            </dd>
+            <dt>
+                Work place
+            </dt>
+            <dd>
+                @Html.DisplayFor(m => m.WorkPlace)
+            </dd>
+            <dt>
+                Warnings
+            </dt>
+            <dd>
+                @Html.DisplayFor(m => m.Warnings)
+            </dd>
+            <dt>
+                Address street
+            </dt>
+            <dd>
+                @Html.DisplayFor(m => m.Address.StreetName)
+            </dd>
+            <dt>
+                City ot town
+            </dt>
+            <dd>
+                @Html.DisplayFor(m => m.Address.CityOrTown)
+            </dd>
+            <dt>
+                Country
+            </dt>
+            <dd>
+                @Html.DisplayFor(m => m.Address.Country)
+            </dd>
+        </dl>
+        <h4>
+        @Html.ActionLink("History of visits", "ShowVisits", new { id = Model.PatientId })&nbsp;
+        @Html.ActionLink("Patients teeth", "ShowTeeth", new { id = Model.PatientId })</h4>
+        <h4> @Html.ActionLink("Back to patients", "ShowPatients", "Home")</h4>
+    </fieldset>
+</div>
+@if (Session["dantistId"] != null)
+{
+    <script>
+        document.getElementById("logout1").innerHTML = "Logout " + "@Session["login"].ToString()";
+        document.getElementById("logout").style.display = "block";
+        document.getElementById("showpatients").style.display = "block";
+        document.getElementById("createpatient").style.display = "block";
+        document.getElementById("login").style.display = "none";
+    </script>}    

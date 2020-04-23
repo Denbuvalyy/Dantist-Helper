@@ -1,0 +1,54 @@
+﻿@model DHPA1.Models.Patient
+
+@{
+    ViewBag.Title = "CreatePatient";
+}
+
+<div class="ss-item-required" >
+    <fieldset class="mine" style="float:right;">
+        <legend>New Patient</legend>
+
+        @using (Html.BeginForm("CreatePatient", "Home", FormMethod.Post, new { name = "newpatient" }))
+        {
+            <span>Name:</span><br />
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Patient's name", required = "required" })<br />
+            <span>Surname:</span><br />
+            @Html.TextBoxFor(m => m.Surname, new { @class = "form-control", placeholder = "Enter your surname", required = "required" })<br />
+            <span>Date of birth:</span><br />
+            @Html.TextBoxFor(m => m.DOB, new { @class = "form-control", type = "date", required = "required" })<br />
+            <span>Phone number:</span>
+            @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", type = "tel", required = "required" })<br />
+            <span>Email address:</span>
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", type = "email", placeholder = "Email address", required = "required" })<br />
+
+            <span>Work place name:</span>
+            @Html.TextBoxFor(m => m.WorkPlace, new { @class = "form-control", placeholder = "Workplace name", required = "required" })<br />
+            <span>Address:</span>
+            @Html.TextBoxFor(m => m.Address.StreetName, new { @class = "form-control", placeholder = "Street", required = "required" })<br />
+            <span>City or town:</span>
+            @Html.TextBoxFor(m => m.Address.CityOrTown, new { @class = "form-control", placeholder = "City or town", required = "required" })<br />
+            <span>Country:</span>
+            @Html.TextBoxFor(m => m.Address.Country, new { @class = "form-control", placeholder = "Country", required = "required" })<br />
+            <span>Patients warnings:</span>
+            @Html.TextAreaFor(m => m.Warnings, new { @class = "form-control", placeholder = "Patient's warnings", type = "textarea", required = "required" })<br />
+            
+            <p><input type="button" class="btn" id="btnCrt" value="Create" onclick="SubmitForm('newpatient')" /></p>
+        }
+    </fieldset>
+</div>
+
+@if (ViewBag.UserExists!= 0&&ViewBag.UserExists==true)
+{
+    <script>window.alert("Such patient already exists!");</script>
+}
+
+@if (Session["dantistId"] != null)
+{
+    <script>
+        document.getElementById("logout1").innerHTML = "Logout " + "@Session["login"].ToString()";
+        document.getElementById("logout").style.display = "block";
+        document.getElementById("showpatients").style.display = "block";
+        document.getElementById("createpatient").style.display = "block";
+        document.getElementById("login").style.display = "none";
+        document.getElementById("createpatient").classList.add("active");
+    </script>}

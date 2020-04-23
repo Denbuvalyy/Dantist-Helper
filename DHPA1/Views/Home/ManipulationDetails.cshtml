@@ -1,0 +1,37 @@
+﻿@model List<DHPA1.Models.Picture>
+
+@{
+    ViewBag.Title = "ManipulationDetails";
+}
+
+<div id="visitdtls" class="mine" style="margin-top:30px;">
+    <fieldset>
+        <legend>Manipulation images</legend>
+        @foreach (var item in Model)
+        {
+            <div class="imgContainer img-responsive" style="float:left;">
+                <div>
+                    <a target="_blank" href="@Url.Content(item.PicturePath)">
+                        <img src="@Url.Content(item.PicturePath)" alt="visitdetails" style="width:150px">
+                    </a>
+                </div>
+                <div class="imgButton" style="text-align:center;">
+                    <button type="button" class="bg-info" onclick="DeleteConfirm(@item.PictureId,'im')">Delete</button>
+                </div>
+            </div>
+        }
+    </fieldset>
+    <br /><br />
+    <h4>@Html.ActionLink("Back to Manipulations", "ShowManipulations", new { id = (int)Session["toothId"] })</h4>
+
+</div>
+@if (Session["dantistId"] != null)
+{
+    <script>
+        document.getElementById("logout1").innerHTML = "Logout " + "@Session["login"].ToString()";
+        document.getElementById("logout").style.display = "block";
+        document.getElementById("showpatients").style.display = "block";
+        document.getElementById("createpatient").style.display = "block";
+        document.getElementById("login").style.display = "none";
+    </script>}
+

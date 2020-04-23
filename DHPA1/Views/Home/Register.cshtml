@@ -1,0 +1,37 @@
+﻿@model DHPA1.Models.Register
+
+@{
+    ViewBag.Title = "Register";
+}
+
+<div id="registerdantist">
+    <fieldset class="mine" style="float:right;margin-top:70px;">
+        <legend>Register</legend>
+        @using (Html.BeginForm("Register", "Home", FormMethod.Post))
+        {
+            <span>User Name:</span><br />
+            @Html.TextBoxFor(m => m.Login, new { @class = "form-control", placeholder = "Enter your login", required = "required" })<br />
+            <span>Email address:</span><br />
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Enter your email", required = "required" })<br />
+        
+           <p><input type="submit" class="btn" id="btnReg" value="Register"/></p>
+        }
+    </fieldset>
+    @if(Model.EmailExists)
+    { <script>alert("User with such email already registered. Try to login.")</script>}
+    @if (Model.UserExists)
+    {
+        <script>window.alert("Such user already exists! Suggest another user name.");</script>}
+</div>
+
+@if (Session["dantistId"] != null)
+{
+    <script>
+        document.getElementById("logout1").innerHTML = "Logout " + "@Session["login"].ToString()";
+        document.getElementById("logout").style.display = "block";
+        document.getElementById("showpatients").style.display = "block";
+        document.getElementById("createpatient").style.display = "block";
+        document.getElementById("login").style.display = "none";
+        document.getElementById("registerdantist").style.display = "none";
+    </script>}
+<script>document.getElementById("login").classList.add("active");</script>

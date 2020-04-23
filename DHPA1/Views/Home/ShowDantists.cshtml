@@ -1,0 +1,176 @@
+﻿@model IEnumerable<DHPA1.Models.Dantist>
+
+@{
+    ViewBag.Title = "ShowDantists";
+    var pageNum = 0;
+}
+
+@helper printPage(int i)
+{
+    if (i == ViewBag.pageNumber)
+    {
+        <a class="activeM" href="~/Home/ShowDantists/?pageNumber=@i&SearchStr=@ViewBag.searchStr&items=@ViewBag.items">@i</a>
+    }
+    else
+    {
+        <a href="~/Home/ShowDantists/?pageNumber=@i&SearchStr=@ViewBag.searchStr&items=@ViewBag.items">@i</a>
+    }
+}
+
+<h2>Dantists DB</h2>
+<div class="mine">
+
+    @using (Html.BeginForm("ShowDantists", "Home", FormMethod.Post))
+    {<div>
+            <span class="glyphicon glyphicon-search"></span>:&nbsp;
+
+            <input type="text" id="SearchStr" name="SearchStr" class="form-inline" onfocus="this.setSelectionRange(this.value.length, this.value.length);"
+                   autofocus value="@ViewBag.searchStr" onkeydown="setTimeout(SearchFunction,1000,this)" />
+            <span>&nbsp;&nbsp; Found @ViewBag.totalSrch dantists</span>
+            <input type="submit" id="btnSearch" class="btn-default" value="Search Now" />&nbsp;
+            Show:
+            <select id="PageItems" name="PageItems" onchange="ShowItems(this.value)">
+
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+            </select>
+        </div>
+    }
+    <br />
+    <div>
+
+        <table id="dtBasicExample" class="table table-bordered table-sm" cellspacing="0">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(Model => Model.Login)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(Model => Model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(Model => Model.Surname)
+                </th>
+                <th>Contact details</th>
+                <th>
+                    Work place
+                </th>
+                <th>
+                    Action
+                </th>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Login)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Surname)
+                    </td>
+                    <td>@item.PhoneNumber  @item.Email</td>
+                    <td>
+                        @item.WorkPlace.City @item.WorkPlace.PlaceName
+                    </td>
+                    <td>                       
+                        @Html.ActionLink("Delete", "DeleteDantist", new { id = item.DantistId })
+                    </td>
+
+                </tr>
+            }
+        </table>
+    </div>
+    <div id="paginationMine" class="paginationMine">
+        <a id="leftShift" href="#" onclick="SideJump(-1)">&laquo;</a>
+        @if (@ViewBag.pages > 10)
+        {
+            switch (ViewBag.pageNumber)
+            {
+                case int n when (n == 1 || n == 2):
+                    for (int i = 1; i < 6; i++)
+                    {
+                        @printPage(i);
+                    }
+                    <a class="disbM">........</a>
+                    for (int i = ViewBag.pages - 2; i < ViewBag.pages + 1; i++)
+                    {
+                        @printPage(i);
+                    }
+                    break;
+                case int n when (n >= 3 && n <= ViewBag.pages - 6):
+                    for (int i = ViewBag.pageNumber - 2; i < ViewBag.pageNumber + 3; i++)
+                    {
+                        @printPage(i);
+                        pageNum = i;
+                    }
+                    if (pageNum != ViewBag.pages - 4)
+                    {
+                        <a class="disbM">........</a>
+                    }
+                    for (int i = ViewBag.pages - 3; i < ViewBag.pages + 1; i++)
+                    {
+                        @printPage(i);
+                    }
+                    break;
+                case int n when (n >= ViewBag.pages - 5 && n <= ViewBag.pages):
+                    {
+                        for (int i = ViewBag.pageNumber - 2; i < ViewBag.pages + 1; i++)
+                        {
+                            @printPage(i);
+                        }
+                    }
+                    break;
+            }
+        }
+        else
+        {
+            for (int i = 1; i < @ViewBag.pages + 1; i++)
+            {
+                @printPage(i);
+            }
+        }
+        <a id="rightShift" href="#" onclick="SideJump(1)">&raquo;</a>
+    </div>
+</div>
+@if (Session["dantistId"] != null)
+{
+    <script>
+        document.getElementById("logout1").innerHTML = "Logout " + "@Session["login"].ToString()";
+        document.getElementById("logout").style.display = "block";
+        document.getElementById("showpatients").style.display = "block";
+        document.getElementById("createpatient").style.display = "block";
+        document.getElementById("login").style.display = "none";
+    </script>}
+@if (Session["dantistId"] != null && Session["login"].ToString() == "admin")
+{
+    <script>document.getElementById("dantistsinfo").style.display = "block";</script>}
+
+<script>
+    function SearchFunction(input) {
+        window.location.href = "/Home/ShowDantists/?SearchStr=" + input.value;
+    }
+
+    function ShowItems(value) {
+        var items = document.getElementById("PageItems").value;     
+        window.location.href = "/Home/ShowDantists/?items=" + value + "&SearchStr=" + document.getElementById("SearchStr").value;
+    }
+    function SideJump(a) {
+        var c;
+        if (a < 0) { c = @ViewBag.pageNumber-1; } else { c =@ViewBag.pageNumber+1;}
+        window.location.href = "/Home/ShowDantists/?pageNumber=" + c + "&SearchStr=" + document.getElementById("SearchStr").value
+            + "&items=" + document.getElementById("PageItems").value;
+    }
+    document.getElementById("btnSearch").style.display = "none";
+    document.getElementById("PageItems").value =@ViewBag.items;
+    if (@ViewBag.pageNumber== 1) { document.getElementById("leftShift").style.display = "none"; }
+    if (@ViewBag.pageNumber==@ViewBag.pages) { document.getElementById("rightShift").style.display = "none"; }
+    if (@ViewBag.pageNumber== 1 &&@ViewBag.pageNumber==@ViewBag.pages||@ViewBag.pages==0)
+    {
+        document.getElementById("leftShift").style.display = "none";
+        document.getElementById("rightShift").style.display = "none";
+    }
+</script>
+

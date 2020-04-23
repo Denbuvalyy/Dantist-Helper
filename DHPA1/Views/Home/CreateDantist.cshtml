@@ -1,0 +1,78 @@
+﻿@model DHPA1.Models.Dantist
+
+@{
+    ViewBag.Title = "CreateDantist";
+}
+
+<div class="ss-item-required" id="createdantist">
+    <fieldset style="width:40%;float:right;">
+        <legend>New Dantist</legend>
+        @using (Html.BeginForm("CreateDantist", "Home", FormMethod.Post, new { name = "newdantist" }))
+        {
+
+            <span>Name:</span><br />
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Enter your name", required = "required" })<br />
+            <span>Surname:</span><br />
+            @Html.TextBoxFor(m => m.Surname, new { @class = "form-control", placeholder = "Enter your surname", required = "required" })<br />
+            <span>Date of birth:</span><br />
+            @Html.TextBoxFor(m => m.DoB, new { @class = "form-control", type = "date", required = "required" })<br />
+            <span>Address:</span>
+            @Html.TextBoxFor(m => m.DantistAddress, new { @class = "form-control", placeholder = "Enter your address", required = "required" })<br />
+
+            <span>Phone number:</span>
+            @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", type = "tel", placeholder = "Phone number" })<br />
+            @Html.HiddenFor(m => m.Login)
+            @Html.HiddenFor(m => m.Email)
+            <h4> Main workplace information</h4>
+            @Html.LabelFor(m => m.WorkPlace.Private, new { title = "Tick it if you work in private cabinet" })<span>:</span>
+            @Html.CheckBoxFor(m => m.WorkPlace.Private, new { title = "Tick it if you work in private cabinet" })<br />
+            <span>Workplace name:</span>
+            @Html.TextBoxFor(m => m.WorkPlace.PlaceName, new { @class = "form-control", type = "text", placeholder = "Workplace name", required = "required" })<br />
+            <span>House number:</span>
+            @Html.TextBoxFor(m => m.WorkPlace.HouseNumber, new { @class = "form-control", type = "number", min = "0", placeholder = "Housenumber" })<br />
+            <span>Street name:</span>
+            @Html.TextBoxFor(m => m.WorkPlace.StreetName, new { @class = "form-control", type = "text", placeholder = "Street", required = "required" })<br />
+            <span>City:</span>
+            @Html.TextBoxFor(m => m.WorkPlace.City, new { @class = "form-control", type = "text", placeholder = "City", required = "required" })<br />
+
+            <span>Password:</span><br />
+            @Html.TextBoxFor(m => m.Password, new { @class = "form-control", onblur = "if(this.value.length<8){alert('Password must be atleast 8 symbols long!');}", @type = "password", id = "textType", placeholder = "Enter your password", title = "At least 8 symbols", required = "required" })<br />
+            <span>Retype password:</span><br />
+            @Html.TextBox("rePassword", null, new { @class = "form-control", @type = "password", id = "textType2", placeholder = "Retype password", required = "reuired" })<br />
+            <input type="checkbox" id="passwordChbx" onclick="ShowPassword('textType','textType2')" />
+            <label for="passwordChbx">Show password </label><br /><br />
+
+            <p><input type="button" class="btn" id="btnCrt" value="Create" onclick="PasswordCheck()" /></p>
+        }
+
+    </fieldset>
+        </div>
+        @if (ViewBag.modelnotvalid)
+        {
+            <script>window.alert("Feel all fields in correct way!");</script>}
+        @if (Session["dantistId"] != null)
+        {
+            <script>
+                document.getElementById("logout1").innerHTML = "Logout " + "@Session["login"].ToString()";
+                document.getElementById("logout").style.display = "block";
+                document.getElementById("showpatients").style.display = "block";
+                document.getElementById("createpatient").style.display = "block";
+                document.getElementById("login").style.display = "none";
+                document.getElementById("createdantist").style.display = "none";
+            </script>
+        }
+<script>
+    function PasswordCheck() {
+        var firstLine = document.getElementById("textType").value;
+        var secondLine = document.getElementById("textType2").value;
+        if (firstLine.length < 8) {
+            alert("Password must be atleast 8 symbols!");
+        }
+        else if (secondLine != firstLine) {
+            alert("Password doesn't match!");
+        }
+        else {
+            SubmitForm('newdantist');           
+        }
+    }
+</script>

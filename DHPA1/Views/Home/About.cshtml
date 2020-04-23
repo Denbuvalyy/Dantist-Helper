@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "About";
+}
+
+<h3>@ViewBag.Message</h3>
+
+<p>Keeps all the records about patients and their visits</p>
+@if (Session["dantistId"] != null)
+{
+    <script>
+        document.getElementById("logout1").innerHTML = "Logout " + "@Session["login"].ToString()";
+        document.getElementById("logout").style.display = "block";
+        document.getElementById("showpatients").style.display = "block";
+        document.getElementById("createpatient").style.display = "block";       
+        document.getElementById("login").style.display = "none";        
+    </script>}    
+<script>
+    document.getElementById("about").classList.add("active");
+</script>

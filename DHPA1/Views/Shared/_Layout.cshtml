@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title -DH-PA</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <style>
+        body {
+            padding-top: 50px;
+            background: url(/Images/teeth.jpg) fixed center center no-repeat;
+            background-size: cover;
+        }
+        img {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px;
+            width: 150px;
+        }
+
+            img:hover {
+                box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+            }
+
+
+@@media screen and (max-width:600px) {
+  /* For mobile phones: */
+  .mine {
+    width: 100%;
+  }
+}
+        @@media screen and (max-width:1500px) {
+            
+            .mine {
+                width: 70%;
+            }
+        }           
+    </style>
+</head>
+<body id="mybody">
+      
+    <div class="navbar navbar-default navbar-fixed-top" style="background-color:deepskyblue;border:0px">
+        <div class="container ">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("DH-PA", "Index", "Home", new { area = "" }, new { @class = "navbar-brand", id = "index" })
+            </div>
+            <div class="navbar-collapse collapse ">
+                <ul class="nav navbar-nav ">
+                    <li id="showpatients" style="display:none;">@Html.ActionLink("Patients-DB", "ShowPatients", "Home")</li>
+                    <li id="createpatient" style="display:none;">@Html.ActionLink("Create patient", "CreatePatient", "Home")</li>
+                    <li id="about">@Html.ActionLink("About", "About", "Home")</li>
+                    <li id="contact">@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li id="dantistsinfo" class="dropdown" style="display:none;">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Dantists-DB<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/Home/ShowDantists">Show Dantists</a></li>
+                            <li><a href="#">Page 1-2</a></li>
+                            <li><a href="#">Page 1-3</a></li>
+                        </ul>
+                    </li>
+
+                </ul>
+                <form class="navbar-form navbar-left" style="padding:0px; border-top-width:0px;"></form>
+                <ul class="nav navbar-nav navbar-right">
+
+                    <li id="login">@Html.ActionLink("Login", "Login", "Home")</li>
+                    <li id="logout" style="display:none;">@Html.ActionLink("Logout", "Logout", "Home", new { id = "logout1" })</li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+
+    </div>
+    <div style="bottom:0;width:100%;">
+        <hr />
+        <footer style="padding-left:5%">
+            <p>&copy; @DateTime.Now.Year - DANTIST HELPER & PATIENT ADVISER</p>
+        </footer>
+    </div>
+    @Scripts.Render("~/bundles/myjs")
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>

@@ -1,0 +1,33 @@
+﻿body {
+}
+.Myheader {
+    padding: 10px;
+    color: white;
+    font-size: 50px;
+    font-family: cursive;
+    text-align: center;
+}
+.paginationMine a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+    .paginationMine a.disbM {
+        pointer-events: none;
+    }
+
+    .paginationMine a.activeM {
+        background-color: #4CAF50;
+        color: white;
+        border-radius: 5px;
+    }
+
+    .paginationMine a:hover:not(.activeM):not(.disbM) {
+        background-color: #ddd;
+        border-radius: 5px;
+    }
+    .mine {
+        float:right;
+    }
