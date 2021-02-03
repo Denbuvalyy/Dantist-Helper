@@ -1,0 +1,1 @@
+https://dentisthelper.azurewebsites.net
